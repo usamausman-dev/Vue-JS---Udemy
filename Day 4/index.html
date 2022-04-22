@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Hello, Vue!</title>
+</head>
+
+<body>
+
+    <div id="app" class="container my-5">
+
+        <div class="card p-5" id="monster">
+            <div class="card-body text-center">
+                <h3>Monster Health</h3>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                    :style="monsterBarStyles" :aria-valuenow="{monsterHealth}">
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-5" id="player">
+            <div class="card-body text-center">
+                <h3>Your Health</h3>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                    :style="playerBarStyles" :aria-valuenow="{playerHealth}">
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-5" v-if="winner">
+            <div class="card-body text-center">
+                <h3>Game Over!</h3>
+                <h3 v-if="winner === 'monster' ">You Lost!</h3>
+                <h3 v-else-if="winner === 'player' ">You Won!</h3>
+                <h3 v-else="winner === 'draw' ">Its Draw....</h3>
+                <button class="btn btn-primary" @click="startGame">Start New Game</button>
+            </div>
+        </div>
+
+
+        <div v-else>
+
+            <div class="btn-group mt-5 p-5 bg-light border border-2 container" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-primary" @click="attackMonster">Attack</button>
+                <button type="button" class="btn btn-primary" :disabled="mayUseSpecialAttack"
+                    @click="specialAttackMonster">Special Attack</button>
+                <button type="button" class="btn btn-primary" @click="healPlayer">Heal</button>
+                <button type="button" class="btn btn-primary" @click="surrender">Surrender</button>
+            </div>
+
+            <div class="my-5">
+                <h5 class="my-5">Battle Log</h5>
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="logMessage in logMessages">
+                        <span> {{logMessage.actionBy === 'player' ? 'Player' : 'Monster' }} </span>
+                        <span v-if="logMessage.actionType === 'heal' "> Heals himself for
+                            <span class="text-success">
+                                {{logMessage.actionValue}}
+                            </span>
+                        </span>
+                        <span v-else>
+                            Attacks and Deals
+                            <span class="text-danger">{{logMessage.actionValue}}</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
